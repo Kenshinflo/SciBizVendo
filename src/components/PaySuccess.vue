@@ -1,14 +1,18 @@
 <script setup>
 import { ref,  defineExpose } from 'vue';
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
-// import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
+import { CheckCircleIcon } from '@heroicons/vue/24/solid';
+import PaytacaLogo from './icons/paytaca_logo.png';
+
 const open = ref(false)
+  
 const closeModal =  function() {
     open.value = false
 }
 const openModal = function() {
     open.value = true
 }
+  
 defineExpose({
   openModal,
   closeModal
@@ -26,18 +30,27 @@ defineExpose({
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <TransitionChild as="template" enter="ease-out duration-300" enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200" leave-from="opacity-100 translate-y-0 sm:scale-100" leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-              <DialogPanel class="relative transform overflow-hidden rounded-2xl bg-white/75 text-left shadow-xl transition-all min-h-96 sm:my-8 sm:w-full sm:max-w-md">
+              <DialogPanel class="relative transform overflow-hidden rounded-2xl bg-white/75 text-left shadow-xl transition-all min-h-96  sm:my-8 sm:w-full sm:max-w-md">
                 <div class="bg-white min-h-96 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div class="">
                     <!-- <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                       <ExclamationTriangleIcon class="h-6 w-6 text-red-600" aria-hidden="true" />
                     </div> -->
                     <div class="mt-3 text-center sm:mt-0 sm:text-left">
-                      <!-- <DialogTitle as="h3" class="text-xl font-dela font-normal leading-6 bg-cyan-300 text-white/95 w-52 py-2 text-center mx-auto tracking-tight">Scan to Pay</DialogTitle>
-                      <div class="w-full min-h-20 flex flex-col items-center justify-center">
-                        <p class="text-sm text-gray-500">-QR code here></p>                      
-                      </div> -->
-                      <slot />
+                        <DialogTitle as="h3" class="text-xl font-dela font-normal leading-6 bg-[#C7FF51] text-black w-52 p-3 text-center mx-auto tracking-normal">
+                        Successful!
+                        </DialogTitle>
+                        <div class="w-full min-h-80 flex flex-col items-center justify-between">  
+                            <div class="mt-20">
+                                <img :src="PaytacaLogo" class="h-24 w-auto" alt="">
+                                <CheckCircleIcon class="absolute right-44 top-48  h-10 text-green-600 mt-10 " aria-hidden="true" />
+                            </div>
+                            <div class="text-center mb-3">
+                                <p class="text-normal font-dela text-black">Transaction Successful</p>          
+                                <small class="font-space text-gray-500">Thank you for using Paytaca</small> 
+                            </div>              
+                        </div>
+                        
                     </div>
                   </div>
                 </div>

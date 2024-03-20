@@ -3,7 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import OptionView from '../views/OptionView.vue'
 import StoreView from '../views/StoreView.vue'
 import ModalEx from '../components/BaseModal.vue'
-
+import SuccessModal from '../components/PaySuccess.vue'
+import ProductView from '../components/ProductView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,16 @@ const router = createRouter({
       path: '/modal',
       name: 'modalex',
       component: ModalEx
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: SuccessModal
+    },
+    {
+      path: '/product',
+      name: 'product',
+      component: ProductView
     },
     {
       path: '/about',

@@ -1,9 +1,13 @@
-<script >
+<script>
+import { ref } from 'vue';
 import image from "../components/products/1.png";
 import image1 from "../components/products/2.png";
 import image2 from "../components/products/3.png";
 import image3 from "../components/products/4.png";
 import image4 from "../components/products/5.png";
+import ProductView from "../components/ProductView.vue";
+
+// const product = ref(null);
 export default {
     data(){
         return{
@@ -56,10 +60,18 @@ export default {
                 {
                     id:'D16', price:'15.00', bch:'0.0007', stock:'3', img:''
                 }
-            ]   
+            ],
         }
-    }
+    },
 }
+</script>
+<script setup>
+    // import PaySuccess from "../components/PaySuccess.vue";
+    const modal = ref(null)
+    const openProd = () => {
+        modal.value.openProd()
+    }
+   
 </script>
 
 <template>
@@ -79,10 +91,14 @@ export default {
             </RouterLink>
         </div>
         <div class="itemSection grid grid-cols-4 gap-4 content-center justify-items-center mx-4">
+            <!-- <button >Click me</button> -->
             <div v-for="item in items" :key="item.id">
-                <div class="gridCon h-50 w-46 shadow-rxl bg-white rounded hover:scale-105 hover:ease-in hover:transition-transform hover:">
+                <div 
+                    class="gridCon h-50 w-46 shadow-rxl bg-white rounded hover:cursor-pointer hover:scale-105 hover:ease-in hover:transition-transform "
+                    @click="openProd()"
+                >
                     <div class="h-48 bg-white rounded outline outline-black outline-3 flex items-center justify-center">
-                        <img :src="item.img !== '' ? item.img : none" class="w-28 h-fit" loading="lazy" />
+                        <img :src="item.img !== '' ? item.img : ''" class="w-28 h-fit" loading="lazy" />
                     </div>
                     <div class="relative grid grid-cols-2 p-1">
                         <div class="">
@@ -104,6 +120,45 @@ export default {
             </div>
         </div>
     </div>
+    <ProductView ref="modal">
+        <div class="w-24 py-1 bg-black ">
+            <p class="font-dela text-white text-center text-3xl">A01</p>
+        </div>
+        <div class="grid grid-cols-2"> 
+            <div class="bg-gray-700 h-60">
+                
+            </div>
+            <div class="h-60">
+                <div class="grid grid-cols-1 content-center justify-items-center"> 
+                    <p class="font-dela text-black text-xl">Quantity</p>
+                    <div class="grid grid-cols-3  content-center text-center mt-8">
+                        <div class="font-normal text-2xl">
+                            -
+                        </div>
+                        <div class="font-space text-2xl mx-2 font-medium border border-black rounded px-3 " >
+                            1
+                        </div>
+                        <div class="font-normal text-2xl">
+                            +
+                        </div>
+                    </div>
+                    <div class="justify-self-end  place-self-end text-right mr-3 mt-28">
+                        <p class="text-2xl font-space font-medium text-red-600">P15.00</p>
+                        <div class="bg-lime-300 rounded-md border border-black border-l-transparent pl-3 pr-1  ">
+                            <p 
+                                class="font-dela text-2xl text-black 
+                                before:content-['=']
+                                before:font-extralight
+                                "
+                            > 0.0007</p>
+                        </div>
+                        <p class="">BCH</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ProductView>
   </section>
 </template>
 
