@@ -5,6 +5,7 @@ import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessu
 // import PaytacaLogo from './icons/paytaca_logo.png';
 
 const open = ref(false)
+const num = ref(1)
   
 const closeProd =  function() {
     open.value = false
@@ -12,6 +13,7 @@ const closeProd =  function() {
 const openProd = function() {
     open.value = true
 }
+
   
 defineExpose({
   openProd,
@@ -42,7 +44,7 @@ defineExpose({
                   </div>
                 </div>
                 
-                <div class="bg-gray-50 px-4 pb-3  content-center justify-items-center sm:px-6"> 
+                <div class="bg-gray-50 px-4 pb-3 content-center justify-items-center sm:px-6"> 
                   <p class="font-space row-span-3 mb-2">Confirm Purchase:</p>
                   <!-- <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" @click="open = false">Deactivate</button>  -->
                   <div class=" grid gird-rows-2 grid-flow-col"> 

@@ -68,9 +68,20 @@ export default {
 <script setup>
     // import PaySuccess from "../components/PaySuccess.vue";
     const modal = ref(null)
+    const num = ref(1)
     const openProd = () => {
         modal.value.openProd()
     }
+    const addIncrement = function() {
+        num.value++
+    }
+    const subDecrement = function() {
+        if (num.value > 0 ){
+            num.value--
+        }
+        
+    }
+ 
    
 </script>
 
@@ -125,20 +136,19 @@ export default {
             <p class="font-dela text-white text-center text-3xl">A01</p>
         </div>
         <div class="grid grid-cols-2"> 
-            <div class="bg-gray-700 h-60">
-                
+            <div class="bg-lime-300 h-60 mt-3">
             </div>
-            <div class="h-60">
+            <div class="h-60 mt-2">
                 <div class="grid grid-cols-1 content-center justify-items-center"> 
                     <p class="font-dela text-black text-xl">Quantity</p>
-                    <div class="grid grid-cols-3  content-center text-center mt-8">
-                        <div class="font-normal text-2xl">
+                    <div class="grid grid-cols-3 gap-5 content-center text-center mt-8">
+                        <div class="font-normal text-2xl hover:cursor-pointer" @click="subDecrement">
                             -
                         </div>
-                        <div class="font-space text-2xl mx-2 font-medium border border-black rounded px-3 " >
-                            1
+                        <div class="font-space text-2xl max-w-15 font-medium border border-black rounded px-3 " >
+                            {{num}}
                         </div>
-                        <div class="font-normal text-2xl">
+                        <div class="font-normal text-2xl hover:cursor-pointer" @click="addIncrement">
                             +
                         </div>
                     </div>
