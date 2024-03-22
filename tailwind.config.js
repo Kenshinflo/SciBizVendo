@@ -11,6 +11,12 @@ export default {
           lineHeight: '1',
         }],
       },
+      colors: {
+        'lime': {
+          '400': '#C7FF51',
+          '300': '#C7FF51'
+        }
+      },
       height: {
         '100': '65rem',
       },

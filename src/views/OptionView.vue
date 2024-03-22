@@ -2,12 +2,12 @@
 import { ref } from 'vue';
 // import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 // import BaseModal from "../components/BaseModal.vue";
-import PaySuccess from "../components/PaySuccess.vue";
+import CameraScan from "../components/CameraScan.vue";
 
 
 const modal = ref(null)
 const openModal = () => {
-    modal.value.openModal()
+    modal.value.openSuccess()
 }
 </script>
 
@@ -58,13 +58,13 @@ const openModal = () => {
                             </div>
                     </div>
                     
-                <!-- <BaseModal :modalActive="modalActive"  @update:modalActive="updateModalActive" ref="modal">
-                    <DialogTitle as="h3" class="text-xl font-dela font-normal leading-6  text-black/95 w-52 py-2 text-center mx-auto tracking-tight">Scan to Pay</DialogTitle>
-                      <div class="w-full min-h-20 flex flex-col items-center justify-center">
-                        <p class="text-sm text-gray-500">-Scan Camera here-</p>                      
-                      </div>
-                </BaseModal> -->
-                <PaySuccess  ref="modal"/>
+                
+                <CameraScan ref="modal">
+                    <p class="text-normal font-dela text-black">Transaction Successful</p>          
+
+                    <small class="font-space text-gray-500">Thank you for using Paytaca</small> 
+                </CameraScan>
+
             </div>
             <div class="absolute bottom-0 bg-green-400 w-full h-12 mt-auto rounded-b-2xl">
                 <div class=" h-12 flex flex-row-reverse items-center p-5">

@@ -5,10 +5,23 @@ import image1 from "../components/products/2.png";
 import image2 from "../components/products/3.png";
 import image3 from "../components/products/4.png";
 import image4 from "../components/products/5.png";
+import image5 from "../components/products/6.png";
+import image6 from "../components/products/7.png";
+import image7 from "../components/products/8.png";
+import image8 from "../components/products/9.png";
+import image9 from "../components/products/10.png";
+import image10 from "../components/products/11.png";
+import image11 from "../components/products/12.png";
+import image12 from "../components/products/13.png";
+import image13 from "../components/products/14.png";
+import image14 from "../components/products/15.png";
+import image15 from "../components/products/16.png";
 import ProductView from "../components/ProductView.vue";
+
 
 // const product = ref(null);
 export default {
+    
     data(){
         return{
             items:[
@@ -25,64 +38,74 @@ export default {
                     id:'A04', price:'40.00', bch:'0.0007', stock:'43', img:image4
                 },
                 {
-                    id:'B05', price:'10.00', bch:'0.0007', stock:'0', img:image1
+                    id:'B05', price:'10.00', bch:'0.0007', stock:'0', img:image5
                 },
                 {
-                    id:'B06', price:'15.00', bch:'0.0007', stock:'2', img:''
+                    id:'B06', price:'15.00', bch:'0.0007', stock:'2', img:image6
                 },
                 {
-                    id:'B07', price:'15.00', bch:'0.0007', stock:'3', img:''
+                    id:'B07', price:'15.00', bch:'0.0007', stock:'3', img:image7
                 },
                 {
-                    id:'B08', price:'15.00', bch:'0.0007', stock:'6', img:''
+                    id:'B08', price:'15.00', bch:'0.0007', stock:'6', img:image8
                 },
                 {
-                    id:'C09', price:'15.00', bch:'0.0007', stock:'8', img:''
+                    id:'C09', price:'15.00', bch:'0.0007', stock:'8', img:image9
                 },
                 {
-                    id:'C10', price:'15.00', bch:'0.0007', stock:'5', img:''
+                    id:'C10', price:'15.00', bch:'0.0007', stock:'5', img:image10
                 },
                 {
-                    id:'C11', price:'15.00', bch:'0.0007', stock:'7', img:''
+                    id:'C11', price:'15.00', bch:'0.0007', stock:'7', img:image11
                 },
                 {
-                    id:'C12', price:'15.00', bch:'0.0007', stock:'0', img:''
+                    id:'C12', price:'15.00', bch:'0.0007', stock:'0', img:image12
                 },
                 {
-                    id:'D13', price:'15.00', bch:'0.0007', stock:'0', img:''
+                    id:'D13', price:'15.00', bch:'0.0007', stock:'0', img:image13
                 },
                 {
-                    id:'D14', price:'15.00', bch:'0.0007', stock:'6', img:''
+                    id:'D14', price:'15.00', bch:'0.0007', stock:'6', img:image14
                 },
                 {
-                    id:'D15', price:'15.00', bch:'0.0007', stock:'2', img:''
+                    id:'D15', price:'15.00', bch:'0.0007', stock:'2', img:image15
                 },
                 {
-                    id:'D16', price:'15.00', bch:'0.0007', stock:'3', img:''
+                    id:'D16', price:'15.00', bch:'0.0007', stock:'3', img:image1
                 }
             ],
+            // selectedItems: [],           
         }
     },
 }
 </script>
 <script setup>
     // import PaySuccess from "../components/PaySuccess.vue";
+    defineEmits(['close']);
     const modal = ref(null)
+    // const scan = ref(null)
+    const selectedItems = ref([]);
     const num = ref(1)
-    const openProd = () => {
-        modal.value.openProd()
+
+    const openProd = (item) => {
+        selectedItems.value = [item];
+        // console.log(selectedItems.value); 
+        modal.value.openProd();
     }
     const addIncrement = function() {
-        num.value++
+        const stock = selectedItems.value[0].stock;
+        if (num.value < stock) {
+            num.value++
+        }
     }
     const subDecrement = function() {
         if (num.value > 0 ){
             num.value--
         }
-        
     }
- 
-   
+    const handleModalClose = function() {
+        num.value = 0; // Reset num to 0 when the modal is closed
+    };
 </script>
 
 <template>
@@ -105,8 +128,8 @@ export default {
             <!-- <button >Click me</button> -->
             <div v-for="item in items" :key="item.id">
                 <div 
-                    class="gridCon h-50 w-46 shadow-rxl bg-white rounded hover:cursor-pointer hover:scale-105 hover:ease-in hover:transition-transform "
-                    @click="openProd()"
+                    :class="[item.stock === '0' ? 'bg-red-500 shadow-lg':'bg-white shadow-rxl', 'gridCon h-50 w-46 rounded hover:cursor-pointer hover:scale-105 hover:ease-in hover:transition-transform'] "
+                    @click="item.stock > 0 && openProd(item)"
                 >
                     <div class="h-48 bg-white rounded outline outline-black outline-3 flex items-center justify-center">
                         <img :src="item.img !== '' ? item.img : ''" class="w-28 h-fit" loading="lazy" />
@@ -114,16 +137,16 @@ export default {
                     <div class="relative grid grid-cols-2 p-1">
                         <div class="">
                             <div class="absolute -top-[15px] left-[7px] w-16 py-1 bg-black rounded">
-                                <p class="font-dela text-white text-center text-xl">{{ item.id }}</p>
+                                <p class="font-dela text-white text-center text-xl">{{ item.id  }} </p>
                             </div>
-                            <div :class="[item.stock === '0' ? 'bg-red-500' : 'bg-lime-500', 'w-fit px-1 rounded-md mt-6 mb-1 ml-1']">
+                            <div :class="[item.stock === '0' ? 'bg-neutral-800' : 'bg-lime-500', 'w-fit px-1 rounded-md mt-6 mb-1 ml-1']">
                                 <p class="font-mono tracking-tighter text-white text-sm">Stocks:{{ item.stock }}</p>
                             </div>   
                         </div>
                         <div class="text-right">
-                            <p class="font-space text-normal font-medium text-red-500">₱ {{ item.price }}</p>
-                            <div class="outline outline-2 rounded-md outline-lime-500 mt-1">
-                                <p class="font-dela text-xs text-lime-500">{{ item.bch }}<span class="font-sans text-xs mr-1"> BCH</span></p> 
+                            <p :class="[item.stock === '0' ? 'text-white line-through decoration-white':'text-red-500', 'font-space text-normal font-medium ']">₱ {{ item.price }}</p>
+                            <div :class="[item.stock === '0' ? 'outline-white':'outline-lime-500', 'outline outline-2 rounded-md  mt-1']">
+                                <p :class="[item.stock === '0' ? 'text-white line-through decoration-1':'text-lime-500', 'font-dela text-xs ']">{{ item.bch }}<span class="font-sans text-xs mr-1"> BCH</span></p> 
                             </div>
                         </div>
                     </div>
@@ -131,36 +154,50 @@ export default {
             </div>
         </div>
     </div>
-    <ProductView ref="modal">
+    <ProductView ref="modal" @close="handleModalClose">
         <div class="w-24 py-1 bg-black ">
-            <p class="font-dela text-white text-center text-3xl">A01</p>
+            <p class="font-dela text-white text-center text-3xl">{{ selectedItems[0].id }}</p>
         </div>
         <div class="grid grid-cols-2"> 
-            <div class="bg-lime-300 h-60 mt-3">
+            <div class="bg-lime-300 h-60 mt-3 flex flex-col">
+                <img :src="selectedItems[0].img !== '' ? selectedItems[0].img : ''" class="w-36 mx-auto my-auto h-fit" loading="lazy" />
             </div>
+            
             <div class="h-60 mt-2">
                 <div class="grid grid-cols-1 content-center justify-items-center"> 
                     <p class="font-dela text-black text-xl">Quantity</p>
-                    <div class="grid grid-cols-3 gap-5 content-center text-center mt-8">
+                    <div class="grid grid-cols-3 gap-1 content-center text-center mt-5">
                         <div class="font-normal text-2xl hover:cursor-pointer" @click="subDecrement">
                             -
                         </div>
-                        <div class="font-space text-2xl max-w-15 font-medium border border-black rounded px-3 " >
+                        <div class="font-space text-2xl min-w-14 font-medium border border-black rounded px-2 " >
                             {{num}}
                         </div>
-                        <div class="font-normal text-2xl hover:cursor-pointer" @click="addIncrement">
+                        <div class="font-normal text-2xl hover:cursor-pointer" @click="addIncrement"> 
                             +
                         </div>
                     </div>
                     <div class="justify-self-end  place-self-end text-right mr-3 mt-28">
-                        <p class="text-2xl font-space font-medium text-red-600">P15.00</p>
-                        <div class="bg-lime-300 rounded-md border border-black border-l-transparent pl-3 pr-1  ">
+                        <p class="text-2xl font-space font-medium text-red-600">₱{{ (selectedItems[0].price * num).toFixed(2) }}</p>
+                        <div class="bg-lime-400 rounded-md border border-black border-l-transparent pl-5 pr-1  ">
                             <p 
                                 class="font-dela text-2xl text-black 
                                 before:content-['=']
                                 before:font-extralight
+                                before:absolute
+                                before:right-40
+                                before:bottom-28
+                                before:text-center
+                                before:pr-1
+                                before:h-6
+                                before:mb-1
+                                before:flex
+                                before:items-center
+                                before:content-center
+                                
+
                                 "
-                            > 0.0007</p>
+                            > {{ selectedItems[0].bch }}</p>
                         </div>
                         <p class="">BCH</p>
                         
@@ -169,6 +206,7 @@ export default {
             </div>
         </div>
     </ProductView>
+    
   </section>
 </template>
 

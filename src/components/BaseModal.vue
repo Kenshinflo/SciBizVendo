@@ -1,13 +1,21 @@
 <script setup>
 import { ref,  defineExpose } from 'vue';
+// import PaySuccess from './PaySuccess.vue';
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue';
 // import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
+import PaySuccess from "../components/PaySuccess.vue";
+
 const open = ref(false)
+const success = ref(null)
 const closeModal =  function() {
     open.value = false
 }
 const openModal = function() {
     open.value = true
+}
+const openSuccess = () => {
+    success.value.openSuccess()
+    closeModal()
 }
 defineExpose({
   openModal,
@@ -42,8 +50,8 @@ defineExpose({
                   </div>
                 </div>
                 
-                <div class="bg-gray-50 px-4 py-3 flex items-center justify-center sm:px-6"> 
-                  <!-- <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto" @click="open = false">Deactivate</button>  -->
+                <div class="bg-gray-50 px-4 py-3 flex items-center justify-center gap-2 sm:px-6"> 
+                  <button type="button" class="inline-flex w-full justify-center rounded-md bg-lime-400 px-5 py-3 text-sm font-dela font-normal text-black shadow-sm hover:bg-cyan-400 hover:text-white transition-colors sm:ml-3 sm:w-auto" @click="openSuccess">Success</button> 
                   <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-5 py-3 text-sm font-dela font-normal text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" @click="closeModal" ref="cancelButtonRef">Cancel</button>
                 </div>
               </DialogPanel>
@@ -52,5 +60,9 @@ defineExpose({
         </div>
       </Dialog>
     </TransitionRoot>
+    <PaySuccess ref="success">
+      <p class="text-normal font-dela text-black">Thank you for using Paytaca</p>          
+      <small class="font-space text-gray-500">Dropping your item in just a bit...</small> 
+    </PaySuccess>
 </template>
   
