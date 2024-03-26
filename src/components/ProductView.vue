@@ -1,5 +1,5 @@
 <script setup>
-import { ref,  defineExpose } from 'vue';
+import { ref } from 'vue';
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue';
 import BaseModal from './BaseModal.vue';
 // import { CheckCircleIcon } from '@heroicons/vue/24/solid';
@@ -7,14 +7,22 @@ import BaseModal from './BaseModal.vue';
 
 const open = ref(false)
 const scan = ref(null)
-// const num = ref(1)
-  
+// const num = 0
+defineProps({
+  // num : Number,
+
+})
+
+
 const closeProd =  function() {
     open.value = false
+    emit('closeEmit')
+    
 }
 const openProd = function() {
     open.value = true
 }
+
 
 const openModal = () => {
     scan.value.openModal()
@@ -23,6 +31,7 @@ const openModal = () => {
 const isLoading = ref(false)
 
 // defineEmits(['close']);
+const emit = defineEmits(['closeEmit', 0])
 
 defineExpose({
   openProd,
@@ -71,8 +80,8 @@ defineExpose({
         <div>
             <DialogTitle as="h3" class="text-xl font-dela font-normal leading-6 bg-lime-300 text-black/95 w-52 py-2 text-center mx-auto tracking-tight">Scan to Pay</DialogTitle>
                 <div class="w-full h-80 flex flex-col items-center justify-center">
-                    <p v-if="isLoading==false" class="text-sm text-gray-500 my-auto">-QR code here></p>  
-                    <svg v-else-if="isLoading==true" class="w-28 h-28 text-black/25 animate-spin my-auto" fill="none"
+                    <p v-if="isLoading==true" class="text-sm text-gray-500 my-auto">-QR code here></p>  
+                    <svg v-else-if="isLoading==false" class="w-28 h-28 text-black/25 animate-spin my-auto" fill="none"
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>

@@ -1,5 +1,5 @@
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import image from "../components/products/1.png";
 import image1 from "../components/products/2.png";
 import image2 from "../components/products/3.png";
@@ -16,12 +16,11 @@ import image12 from "../components/products/13.png";
 import image13 from "../components/products/14.png";
 import image14 from "../components/products/15.png";
 import image15 from "../components/products/16.png";
+import no_stock from "../components/products/no-inventory.png";
 import ProductView from "../components/ProductView.vue";
-
 
 // const product = ref(null);
 export default {
-    
     data(){
         return{
             items:[
@@ -80,16 +79,24 @@ export default {
 }
 </script>
 <script setup>
-    // import PaySuccess from "../components/PaySuccess.vue";
-    defineEmits(['close']);
+    // const bchCurrent = 27154.62 
     const modal = ref(null)
-    // const scan = ref(null)
     const selectedItems = ref([]);
-    const num = ref(1)
+    const num = ref(1);
+    const bchCurrent = ref(null);
 
+// Fetch BCH to PHP rate on component mount
+    onMounted(async () => {
+        try {
+            const response = await fetch('https://min-api.cryptocompare.com/data/price?fsym=BCH&tsyms=PHP');
+            const data = await response.json();
+            bchCurrent.value = data['PHP'];
+        } catch (error) {
+            console.error('Error fetching BCH to PHP rate:', error);
+        }
+    });
     const openProd = (item) => {
         selectedItems.value = [item];
-        // console.log(selectedItems.value); 
         modal.value.openProd();
     }
     const addIncrement = function() {
@@ -99,13 +106,16 @@ export default {
         }
     }
     const subDecrement = function() {
-        if (num.value > 0 ){
+        if (num.value > 1 ){
             num.value--
         }
     }
-    const handleModalClose = function() {
-        num.value = 0; // Reset num to 0 when the modal is closed
-    };
+    const emitZero = function() {
+        setTimeout(() => {
+            num.value = 1;
+            // console.log(num.value);
+        }, 300);
+    }
 </script>
 
 <template>
@@ -128,14 +138,14 @@ export default {
             <!-- <button >Click me</button> -->
             <div v-for="item in items" :key="item.id">
                 <div 
-                    :class="[item.stock === '0' ? 'bg-red-500 shadow-lg':'bg-white shadow-rxl', 'gridCon h-50 w-46 rounded hover:cursor-pointer hover:scale-105 hover:ease-in hover:transition-transform'] "
+                    :class="[item.stock === '0' ? 'bg-gradient-to-l  from-red-500 to-zinc-800 to-80% shadow-lg':'bg-white shadow-rxl', 'gridCon h-50 w-46 rounded hover:cursor-pointer hover:scale-105 hover:ease-in hover:transition-transform'] "
                     @click="item.stock > 0 && openProd(item)"
                 >
                     <div class="h-48 bg-white rounded outline outline-black outline-3 flex items-center justify-center">
-                        <img :src="item.img !== '' ? item.img : ''" class="w-28 h-fit" loading="lazy" />
+                        <img :src="item.stock !== '0' ? item.img : no_stock" :class="[item.stock === '0' ? '': '' , 'w-28 h-fit']" loading="lazy" />
                     </div>
-                    <div class="relative grid grid-cols-2 p-1">
-                        <div class="">
+                    <div class="relative flex justify-between p-1">
+                        <div class="flex-none  ">
                             <div class="absolute -top-[15px] left-[7px] w-16 py-1 bg-black rounded">
                                 <p class="font-dela text-white text-center text-xl">{{ item.id  }} </p>
                             </div>
@@ -143,10 +153,10 @@ export default {
                                 <p class="font-mono tracking-tighter text-white text-sm">Stocks:{{ item.stock }}</p>
                             </div>   
                         </div>
-                        <div class="text-right">
+                        <div class="text-right flex-none">
                             <p :class="[item.stock === '0' ? 'text-white line-through decoration-white':'text-red-500', 'font-space text-normal font-medium ']">₱ {{ item.price }}</p>
-                            <div :class="[item.stock === '0' ? 'outline-white':'outline-lime-500', 'outline outline-2 rounded-md  mt-1']">
-                                <p :class="[item.stock === '0' ? 'text-white line-through decoration-1':'text-lime-500', 'font-dela text-xs ']">{{ item.bch }}<span class="font-sans text-xs mr-1"> BCH</span></p> 
+                            <div :class="[item.stock === '0' ? 'outline-white':'outline-lime-500', 'outline outline-2 rounded-md  pl-1']">
+                                <p :class="[item.stock === '0' ? 'text-white line-through decoration-1':'text-lime-500', 'font-dela text-xs mt-1']">{{ (item.price / bchCurrent).toFixed(5) }}<span class="font-sans text-xxs mr-1"> BCH</span></p> 
                             </div>
                         </div>
                     </div>
@@ -154,7 +164,7 @@ export default {
             </div>
         </div>
     </div>
-    <ProductView ref="modal" @close="handleModalClose">
+    <ProductView ref="modal" @close-emit="emitZero">
         <div class="w-24 py-1 bg-black ">
             <p class="font-dela text-white text-center text-3xl">{{ selectedItems[0].id }}</p>
         </div>
@@ -165,39 +175,28 @@ export default {
             
             <div class="h-60 mt-2">
                 <div class="grid grid-cols-1 content-center justify-items-center"> 
-                    <p class="font-dela text-black text-xl">Quantity</p>
-                    <div class="grid grid-cols-3 gap-1 content-center text-center mt-5">
-                        <div class="font-normal text-2xl hover:cursor-pointer" @click="subDecrement">
+                    <p class="font-dela text-black text-xl ">Quantity</p>
+                    <div class="grid grid-cols-3 gap-1 content-center items-center text-center mt-5">
+                        <div class="font-normal text-2xl hover:cursor-pointer border border-black rounded-md py-1 shadow-md" @click="subDecrement">
                             -
                         </div>
-                        <div class="font-space text-2xl min-w-14 font-medium border border-black rounded px-2 " >
+                        <div class="font-space text-2xl min-w-14 font-medium  rounded  border-b-2 border-black  p-2" >
                             {{num}}
                         </div>
-                        <div class="font-normal text-2xl hover:cursor-pointer" @click="addIncrement"> 
+                        <div class="font-normal text-2xl hover:cursor-pointer border border-black rounded-md py-1 shadow-md" @click="addIncrement"> 
                             +
                         </div>
                     </div>
-                    <div class="justify-self-end  place-self-end text-right mr-3 mt-28">
+                    <p class="font-mono tracking-tighter text-black text-md mt-4 bg-lime-400 rounded-md place-self-end px-1 mr-3 ">Stocks:{{ selectedItems[0].stock }}</p>
+                    <div class="justify-self-end  place-self-end text-right mr-3 mt-16">
                         <p class="text-2xl font-space font-medium text-red-600">₱{{ (selectedItems[0].price * num).toFixed(2) }}</p>
-                        <div class="bg-lime-400 rounded-md border border-black border-l-transparent pl-5 pr-1  ">
+                        <div class="bg-lime-400 rounded-md border border-black border-l-transparent min-w-40 flex justify-between">
                             <p 
-                                class="font-dela text-2xl text-black 
-                                before:content-['=']
-                                before:font-extralight
-                                before:absolute
-                                before:right-40
-                                before:bottom-28
-                                before:text-center
-                                before:pr-1
-                                before:h-6
-                                before:mb-1
-                                before:flex
-                                before:items-center
-                                before:content-center
-                                
-
-                                "
-                            > {{ selectedItems[0].bch }}</p>
+                                class= "font-dela text-2xl text-center pr-1 -ml-2 h-6 mb-1"
+                                >=</p>
+                            <p 
+                                class="font-dela text-2xl text-black text-right "
+                            > {{ (selectedItems[0].price * num / bchCurrent).toFixed(5) }}</p>
                         </div>
                         <p class="">BCH</p>
                         

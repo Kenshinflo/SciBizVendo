@@ -10,6 +10,7 @@ export default {
         '8xl': ['5.5rem', {
           lineHeight: '1',
         }],
+        'xxs': '.55rem'
       },
       colors: {
         'lime': {
