@@ -22,6 +22,7 @@
 
 <template>
   <main class="bg-teal-300 m-0 p-0">
+    
     <RouterView />
     <PayOffline ref="offline">
       <div class="mt-3 text-center sm:mt-0 sm:text-left">

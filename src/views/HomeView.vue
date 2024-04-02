@@ -8,6 +8,7 @@
     <RouterLink to="/option">
       <p class="font-katibeh text-9xl text-center tracking-tight text-black">Tap to Start</p>
     </RouterLink>
+    
   </div>
 </template>
 
