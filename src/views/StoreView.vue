@@ -1,5 +1,6 @@
 <script>
 import { ref, onMounted } from 'vue';
+import { inject } from 'vue'
 import image from "../components/products/1.png";
 import image1 from "../components/products/2.png";
 import image2 from "../components/products/3.png";
@@ -98,6 +99,7 @@ export default {
     const openProd = (item) => {
         selectedItems.value = [item];
         modal.value.openProd();
+        getList()
     }
     const addIncrement = function() {
         const stock = selectedItems.value[0].stock;
@@ -116,6 +118,23 @@ export default {
             // console.log(num.value);
         }, 300);
     }
+
+    const axios = inject('axios'); // inject axios
+
+    const getList = () => {
+      axios
+        .post('https://jsonplaceholder.typicode.com/posts', {
+            idHere:'sent diay',
+            priceHere:'1',
+            bchHere:'2',
+            stockHere:'3'
+        })
+        .then(response => {
+          console.log(response.data);
+        });
+    };
+
+    
 </script>
 
 <template>

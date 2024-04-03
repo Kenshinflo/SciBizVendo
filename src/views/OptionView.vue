@@ -61,7 +61,6 @@ const openModal = () => {
                 
                 <CameraScan ref="modal">
                     <p class="text-normal font-dela text-black">Transaction Successful</p>          
-
                     <small class="font-space text-gray-500">Thank you for using Paytaca</small> 
                 </CameraScan>
 
